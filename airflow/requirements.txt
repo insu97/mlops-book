@@ -244,7 +244,7 @@ python-slugify==8.0.1
 pytz==2023.3.post1
 pytzdata==2020.1
 PyWavelets==1.7.0
-pywin32==308
+pywin32==308; sys_platform == 'win32'
 pywinpty==2.0.14
 pyxnat==1.6.2
 PyYAML==6.0.1
