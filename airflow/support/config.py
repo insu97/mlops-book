@@ -1,0 +1,1 @@
+TTBKEY = 'ttbqkrdlstn97011854001'
