@@ -131,7 +131,8 @@ def save_books_to_mysql(df, connection_id):
         categoryId VARCHAR(50),
         categoryName VARCHAR(255),
         publisher VARCHAR(255),
-        customerReviewRank FLOAT
+        customerReviewRank FLOAT,
+        UNIQUE (isbn, isbn13) -- 중복 제거 조건
     );
     """
 
