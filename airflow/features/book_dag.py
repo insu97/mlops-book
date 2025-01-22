@@ -131,8 +131,7 @@ def save_books_to_mysql(df, connection_id):
         categoryId VARCHAR(50),
         categoryName VARCHAR(255),
         publisher VARCHAR(255),
-        customerReviewRank FLOAT,
-        UNIQUE (isbn, isbn13) -- 중복 제거 조건
+        customerReviewRank FLOAT
     );
     """
 
@@ -163,6 +162,15 @@ def save_books_to_mysql_task(**kwargs):
 
     # MySQL에 책 정보 저장
     save_books_to_mysql(collected_books, 'book_db')
+
+    # 중복 제거 쿼리 실행
+    mysql_hook = MySqlHook(mysql_conn_id='book_db')
+    deduplicate_query = """
+    DELETE t1 FROM books t1
+    INNER JOIN books t2 
+    WHERE t1.id > t2.id AND t1.isbn = t2.isbn AND t1.isbn13 = t2.isbn13;
+    """
+    mysql_hook.run(deduplicate_query)
 
 def generate_recommendations(**kwargs):
     ti = kwargs['ti']
