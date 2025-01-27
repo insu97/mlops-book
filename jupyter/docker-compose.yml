@@ -1,6 +1,7 @@
 services:
   datascience-notebook:
     image: jupyter/datascience-notebook:python-3.10.9
+    user: root
     container_name: jupyter_name
     hostname: jupyter-mlops
     restart: always
@@ -12,12 +13,14 @@ services:
     networks:
       - mlops_network
     environment:
-      - NB_USER = insu
+      - NB_USER=insu
       - NB_UID=1000
       - NB_GID=100
       - CHOWN_HOME=yes
-      - CHOWN_HOME_OPTS='-R'
+      - CHOWN_HOME_OPTS=-R
+      - GRANT_SUDO=yes
       - JUPYTER_ALLOW_INSECURE_WRITES=1
+    command: start-notebook.sh --NotebookApp.token=''
 
 networks:
   mlops_network:

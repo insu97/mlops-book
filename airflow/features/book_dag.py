@@ -2,7 +2,6 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import pandas as pd
-import numpy as np
 import requests
 import json
 from sklearn.cluster import KMeans
@@ -29,6 +28,7 @@ dag = DAG(
     description='A DAG for book search and recommendation',
     schedule_interval=timedelta(days=1),
 )
+
 
 # Define the functions
 def search_books(ttbkey, query, df, queryType="Keyword", start=1, MaxResults=50, sort="Accuracy"):
@@ -77,6 +77,7 @@ def search_books(ttbkey, query, df, queryType="Keyword", start=1, MaxResults=50,
 
     return df
 
+
 def collect_books(ttbkey, query, max_books=500):
     df = pd.DataFrame(columns=[
         "title", "link", "author", "pubDate", "description", "isbn", "isbn13",
@@ -96,13 +97,14 @@ def collect_books(ttbkey, query, max_books=500):
     df = df.head(max_books)
     return df
 
+
 def recommend_books(df, num_recommendations=5):
     book_descriptions = df["description"].fillna("")
 
     tfidf_vectorizer = TfidfVectorizer(stop_words="english", max_features=1000)
     tfidf_matrix = tfidf_vectorizer.fit_transform(book_descriptions)
 
-    num_clusters = min(len(df) // 10, 20)
+    num_clusters = max(min(len(df) // 10, 20), 1)
     kmeans = KMeans(n_clusters=num_clusters, random_state=42)
     kmeans.fit(tfidf_matrix)
 
@@ -112,6 +114,7 @@ def recommend_books(df, num_recommendations=5):
     recommended_books = df[df["cluster"] == largest_cluster].head(num_recommendations)
 
     return recommended_books[["title", "author", "description"]]
+
 
 def save_books_to_mysql(df, connection_id):
     # Create a MySQL table if it doesn't exist
@@ -149,11 +152,13 @@ def save_books_to_mysql(df, connection_id):
         'priceSales', 'priceStandard', 'categoryId', 'categoryName', 'publisher', 'customerReviewRank'
     ])
 
+
 def search_and_collect_books(**kwargs):
     ttbkey = kwargs['params']['ttbkey']
     query = kwargs['params']['query']
     collected_books = collect_books(ttbkey, query)
     kwargs['ti'].xcom_push(key='collected_books', value=collected_books.to_json())
+
 
 def save_books_to_mysql_task(**kwargs):
     ti = kwargs['ti']
@@ -172,6 +177,7 @@ def save_books_to_mysql_task(**kwargs):
     """
     mysql_hook.run(deduplicate_query)
 
+
 def generate_recommendations(**kwargs):
     ti = kwargs['ti']
     collected_books = pd.read_json(ti.xcom_pull(key='collected_books', task_ids='search_and_collect_books'))
@@ -182,11 +188,12 @@ def generate_recommendations(**kwargs):
         print(f" 설명: {book['description'][:100]}...")
         print()
 
+
 # Define the tasks
 search_task = PythonOperator(
     task_id='search_and_collect_books',
     python_callable=search_and_collect_books,
-    op_kwargs={'params': {'ttbkey': TTBKEY, 'query': '파이썬'}},
+    op_kwargs={'params': {'ttbkey': TTBKEY, 'query': 'MLOps'}},
     dag=dag,
 )
 

@@ -5,8 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="997d1ac9-8f73-4c3c-b65e-e7e15e15ab20" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/models/book_mlops/data/data_extract.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_mlops/data/db_update.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_mlops/data/json_to_db.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_mlops/data/save_books_to_database.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_mlops/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_mlops/model/new_model_create.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_mlops/model/predict.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_recommend/book_recommend_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_recommend/data/data_extract.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_recommend/data/save_books_to_database.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_recommend/model/check_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_recommend/model/minibatch_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_recommend/model/new_model_create.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/book_recommend/model/predict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/airflow.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/airflow.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/features/book_dag.py" beforeDir="false" afterPath="$PROJECT_DIR$/features/book_dag.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../jupyter/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../jupyter/data/work/.jupyter/lab/workspaces/default-37a8.jupyterlab-workspace" beforeDir="false" afterPath="$PROJECT_DIR$/../jupyter/data/work/.jupyter/lab/workspaces/default-37a8.jupyterlab-workspace" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../jupyter/data/work/.local/share/jupyter/file_id_manager.db" beforeDir="false" afterPath="$PROJECT_DIR$/../jupyter/data/work/.local/share/jupyter/file_id_manager.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../jupyter/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../jupyter/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +47,9 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="2ru35dmQ1S4y204eTp6VEn1Bxg7" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -36,9 +59,10 @@
     "Python.dag_book_recommendation.executor": "Run",
     "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "E:/UpstageAiLab/part7.MLOPS/project/airflow",
+    "last_opened_file_path": "E:/UpstageAiLab/part7.MLOPS/project/airflow/models/book_mlops/model",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -51,6 +75,12 @@
     "stardust.markdown.MarkdownSplitEditorSuppressor:keyList": []
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\UpstageAiLab\part7.MLOPS\project\airflow\models\book_mlops\model" />
+      <recent name="E:\UpstageAiLab\part7.MLOPS\project\airflow\models\book_mlops\data" />
+    </key>
+  </component>
   <component name="RunManager" selected="Python.dag_book_recommendation">
     <configuration name="dag_book_recommendation" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="airflow" />
@@ -123,7 +153,13 @@
       <workItem from="1737394952663" duration="3501000" />
       <workItem from="1737398555933" duration="831000" />
       <workItem from="1737424065611" duration="23205000" />
-      <workItem from="1737507702978" duration="13829000" />
+      <workItem from="1737507702978" duration="18101000" />
+      <workItem from="1737616648608" duration="9721000" />
+      <workItem from="1737681079158" duration="19148000" />
+      <workItem from="1737814510189" duration="8027000" />
+      <workItem from="1737887247847" duration="3720000" />
+      <workItem from="1737944193710" duration="158000" />
+      <workItem from="1737944364190" duration="17104000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,13 @@
+{
+  "base_url": "/",
+  "hostname": "0.0.0.0",
+  "password": false,
+  "pid": 16,
+  "port": 8888,
+  "root_dir": "/home/insu",
+  "secure": false,
+  "sock": "",
+  "token": "",
+  "url": "http://jupyter-mlops:8888/",
+  "version": "2.5.0"
+}
