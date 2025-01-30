@@ -4,14 +4,17 @@ import pandas as pd
 import json
 import os
 
-def search_books(ttbkey, query, df, queryType="Keyword", start=1, MaxResults=50, sort="Accuracy"):
+
+def search_books(ttbkey, query, df,
+                 querytype="Keyword", start=1,
+                 max_results=50, sort="Accuracy"):
     url = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx"
     params = {
         "TTBKey": ttbkey,
         "Query": query,
-        "QueryType": queryType,
+        "QueryType": querytype,
         "start": start,
-        "MaxResults": MaxResults,
+        "MaxResults": max_results,
         "Sort": sort,
         "Cover": "None",
         "CategoryId": "0",
@@ -62,7 +65,8 @@ def collect_books(ttbkey, query, max_books=500):
     max_results_per_call = 50
 
     while len(df) < max_books:
-        df = search_books(ttbkey, query, df, start=start, MaxResults=max_results_per_call)
+        df = search_books(ttbkey, query, df,
+                          start=start, max_results=max_results_per_call)
         start += 1
         if len(df) == len(df.drop_duplicates()):
             break
@@ -83,11 +87,15 @@ def search_and_collect_books(**kwargs):
     os.makedirs(save_path, exist_ok=True)
 
     # 파일명 설정 (쿼리와 현재 날짜를 포함)
-    file_name = f"books_{query}_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.json"
+    file_name = (
+        f"books_{query}_"
+        f"{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.json"
+    )
     full_path = os.path.join(save_path, file_name)
 
     # DataFrame을 JSON 파일로 저장
-    collected_books.to_json(full_path, orient='records', force_ascii=False, indent=4)
+    collected_books.to_json(full_path,
+                            orient='records', force_ascii=False, indent=4)
 
     print(f"Data saved to {full_path}")
 
