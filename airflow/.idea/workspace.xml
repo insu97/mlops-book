@@ -11,6 +11,7 @@
       <change beforePath="$PROJECT_DIR$/models/book_mlops/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/book_mlops/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shell/airflow_run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/shell/airflow_run.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mariadb/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../mariadb/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../tests/test_book_dag.py" beforeDir="false" afterPath="$PROJECT_DIR$/../tests/test_book_dag.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +164,7 @@
       <workItem from="1738221959624" duration="3000" />
       <workItem from="1738221973916" duration="162000" />
       <workItem from="1738222148334" duration="6089000" />
-      <workItem from="1738228431328" duration="3068000" />
+      <workItem from="1738228431328" duration="3369000" />
     </task>
     <servers />
   </component>
