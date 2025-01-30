@@ -16,7 +16,15 @@ from models.book_mlops.model.predict import predict
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+# 프로젝트 최상위 디렉토리
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
+# 필요한 경로를 PYTHONPATH에 추가
+sys.path.append(BASE_DIR)  # 프로젝트 루트
+sys.path.append(os.path.join(BASE_DIR, "support"))  # support 모듈 추가
+sys.path.append(os.path.join(BASE_DIR, "models"))  # models 모듈 추가
+sys.path.append(os.path.join(BASE_DIR, "models", "book_mlops"))  # book_mlops 추가
+sys.path.append(os.path.join(BASE_DIR, "models", "book_recommend"))  # book_recommend 추가
 
 local_timezone = pendulum.timezone('Asia/Seoul')
 
