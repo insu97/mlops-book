@@ -30,6 +30,16 @@ jobs:
         pip install apache-airflow
         pip install -r airflow/requirements.txt
 
+    - name: Set Airflow environment variables
+      run: |
+       echo "AIRFLOW_HOME=$(pwd)/airflow_home" >> $GITHUB_ENV
+       echo "AIRFLOW__CORE__DAGS_FOLDER=$(pwd)/airflow/models" >> $GITHUB_ENV
+
+    - name: List DAGs
+      run: |
+       airflow dags list
+       airflow dags report
+
     - name: Initialize Airflow Database
       run: |
         export AIRFLOW_HOME=$(pwd)/airflow_home
