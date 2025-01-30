@@ -7,7 +7,7 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 import sys
 import os
 
-sys.path.append(os.path.abspath("/home/runner/work/mlops-book/mlops-book/airflow/support"))
+sys.path.append(os.path.abspath("../../support"))
 from support.config import TTBKEY
 from models.book_recommend.data.data_extract import search_and_collect_books
 from models.book_recommend.model.check_model import check_model
