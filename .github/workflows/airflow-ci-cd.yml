@@ -45,6 +45,14 @@ jobs:
         airflow db init
         ls -la $AIRFLOW_HOME  # 디렉토리 내용 확인
 
+    - name: Set PYTHONPATH
+      run: |
+        echo "PYTHONPATH=$(pwd):$(pwd)/airflow/models:$(pwd)/support" >> $GITHUB_ENV
+
+    - name: Set Airflow Variables
+      run: |
+        airflow variables set AIRFLOW_DAGS_PATH $(pwd)/airflow/models
+
     - name: List DAGs
       run: |
        airflow dags list
