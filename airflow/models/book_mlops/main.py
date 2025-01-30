@@ -6,7 +6,7 @@ from airflow.operators.python import PythonOperator, BranchPythonOperator
 
 import sys
 import os
-sys.path.append("/home/runner/work/mlops-book/mlops-book/airflow/support")
+sys.path.append(os.path.abspath("/home/runner/work/mlops-book/mlops-book/airflow/support"))
 
 # 프로젝트 최상위 디렉토리
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
