@@ -5,15 +5,13 @@ from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 
+from support.config import TTBKEY
 from models.book_recommend.data.data_extract import search_and_collect_books
 from models.book_recommend.model.check_model import check_model
 from models.book_recommend.model.new_model_create import new_model_create
 from models.book_recommend.data.save_books_to_database import save_books_to_database_task
 from models.book_recommend.model.predict import predict
 from models.book_recommend.model.minibatch_model import minibatch_model
-
-# from support.config import TTBKEY
-TTBKEY = 'ttbqkrdlstn97011854001'
 
 local_timezone = pendulum.timezone('Asia/Seoul')
 

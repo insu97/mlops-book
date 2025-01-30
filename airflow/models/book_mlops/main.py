@@ -4,6 +4,7 @@ from datetime import datetime
 from airflow import DAG
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 
+from support.config import TTBKEY
 from models.book_mlops.data.db_update import db_update
 from models.book_mlops.data.save_books_to_database import (
     save_books_to_database_task
@@ -12,9 +13,6 @@ from models.book_mlops.data.data_extract import search_and_collect_books
 from models.book_mlops.data.json_to_db import json_to_db
 from models.book_mlops.model.new_model_create import new_model_create
 from models.book_mlops.model.predict import predict
-
-# from support.config import TTBKEY
-TTBKEY = 'ttbqkrdlstn97011854001'
 
 local_timezone = pendulum.timezone('Asia/Seoul')
 
