@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      working-directory: ./airflow
       AIRFLOW_HOME: "${{ github.workspace }}/airflow_home"
       AIRFLOW__CORE__DAGS_FOLDER: "${{ github.workspace }}/airflow/models"
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
