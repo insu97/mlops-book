@@ -48,7 +48,8 @@ jobs:
 
     - name: Set PYTHONPATH
       run: |
-        echo "PYTHONPATH=$(pwd):$(pwd)/airflow/models:$(pwd)/support" >> $GITHUB_ENV
+        echo "PYTHONPATH=${{ github.workspace }}:${{ github.workspace }}/airflow:${{ github.workspace }}/airflow/models:${{ github.workspace }}/airflow/support" >> $GITHUB_ENV
+
 
     - name: Set Airflow Variables
       run: |
