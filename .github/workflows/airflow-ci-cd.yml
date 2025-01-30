@@ -46,6 +46,7 @@ jobs:
       run: |
        airflow dags list
        airflow dags report
+       airflow dags list-import-errors
 
     - name: Start Airflow Scheduler
       run: |
