@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      working-directory: ./airflow
+      working-directory: "${{ github.workspace }}/airflow"
       AIRFLOW_HOME: "${{ github.workspace }}/airflow_home"
-      AIRFLOW__CORE__DAGS_FOLDER: "${{ github.workspace }}/airflow/models"
+      AIRFLOW__CORE__DAGS_FOLDER: "${{ github.workspace }}/airflow/models/book_mlops"
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       AIRFLOW__CORE__EXECUTOR: "SequentialExecutor"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: "sqlite:///${{ github.workspace }}/airflow_home/airflow.db"
