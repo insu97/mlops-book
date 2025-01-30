@@ -25,15 +25,24 @@ jobs:
 
     - name: Initialize Airflow Database
       run: |
-        export AIRFLOW_HOME=$(pwd)/airflow_home  # Airflow 홈 디렉토리 설정
-        airflow db init  # 데이터베이스 초기화
+        export AIRFLOW_HOME=$(pwd)/airflow_home
+        mkdir -p $AIRFLOW_HOME
+        airflow db init
+        ls -la $AIRFLOW_HOME  # 디렉토리 내용 확인
+
     - name: Start Airflow Scheduler
       run: |
+        export AIRFLOW_HOME=$(pwd)/airflow_home
         airflow scheduler &
-    
+
     - name: DAG 테스트
       run: |
+        export AIRFLOW_HOME=$(pwd)/airflow_home
+        echo "Current directory: $(pwd)"
+        echo "AIRFLOW_HOME: $AIRFLOW_HOME"
+        ls -la $AIRFLOW_HOME  # 다시 한 번 디렉토리 내용 확인
         python -m unittest discover tests
+
 
     - name: 프로덕션 배포 (예시)
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
