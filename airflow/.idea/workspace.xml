@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="997d1ac9-8f73-4c3c-b65e-e7e15e15ab20" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_mlops/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/book_mlops/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +158,7 @@
       <workItem from="1738221959624" duration="3000" />
       <workItem from="1738221973916" duration="162000" />
       <workItem from="1738222148334" duration="6089000" />
-      <workItem from="1738228431328" duration="3995000" />
+      <workItem from="1738228431328" duration="5155000" />
     </task>
     <servers />
   </component>
