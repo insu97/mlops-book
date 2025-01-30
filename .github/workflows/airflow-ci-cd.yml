@@ -27,6 +27,9 @@ jobs:
       run: |
         export AIRFLOW_HOME=$(pwd)/airflow_home  # Airflow 홈 디렉토리 설정
         airflow db init  # 데이터베이스 초기화
+    - name: Start Airflow Scheduler
+      run: |
+        airflow scheduler &
     
     - name: DAG 테스트
       run: |
