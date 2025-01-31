@@ -22,7 +22,10 @@ def json_to_db(**kwargs):
         df = pd.DataFrame(data)
 
         # MySQL에 책 정보 저장
-        save_books_to_database(df, 'book_db')
+        try:
+            save_books_to_database(df, 'book_db')
+        except Exception as e:
+            print(e)
 
         # 처리된 파일 삭제 (선택사항)
         os.remove(file_path)
