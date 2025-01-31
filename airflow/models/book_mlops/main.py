@@ -26,7 +26,7 @@ dag = DAG(dag_id="book_mlops",
           },
           description="책 추천 모델",
           # schedule='@daily',
-          schedule='34 * * * *',
+          schedule='29 * * * *',
           start_date=datetime(2025, 1, 1, tzinfo=local_timezone),
           catchup=False,
           tags=["mlops", "recommend"]
