@@ -52,7 +52,7 @@ def predict(**kwargs):
             if not df_filtered.empty:
                 return threshold, df_filtered
             threshold += 0.1
-        return max_threshold, df[df['similarity'] < max_threshold]  # distance
+        return max_threshold, df[df['similarity'] > 0.3]  # ✅ 너무 낮으면 0.3 이상인 것 선택
 
     # 동적 임계값 적용
     similarity_threshold, df_filtered = adjust_threshold(df)
