@@ -77,7 +77,7 @@ jobs:
         airflow dags trigger book_mlops
         sleep 10  # DAG 실행을 기다림 (필요에 따라 조정)
         airflow tasks list book_mlops
-        airflow dags list-runs --dag-id book_mlops --limit 5
+        airflow dags list-runs --dag-id book_mlops
 
     - name: 프로덕션 배포 (예시)
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
