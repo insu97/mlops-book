@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
   schedule:
-    - cron: '29 * * * *'
+    - cron: '35 * * * *'
 
 jobs:
   build:
@@ -23,6 +23,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set Timezone to KST
+      run: |
+        sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+        echo "TZ=Asia/Seoul" >> $GITHUB_ENV
+
     
     - name: Python 설정
       uses: actions/setup-python@v5
