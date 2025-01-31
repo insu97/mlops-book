@@ -33,8 +33,8 @@ def predict(**kwargs):
 
     # 5. 쿼리 벡터화 및 유사도 계산
     query_vector = tfidf_vectorizer.transform([query])
-    distances = euclidean_distances(query_vector, tfidf_matrix).flatten()
-    # similarities = cosine_similarity(query_vector, tfidf_matrix).flatten()
+    # distances = euclidean_distances(query_vector, tfidf_matrix).flatten()
+    similarities = cosine_similarity(query_vector, tfidf_matrix).flatten()
 
     # 6. 클러스터 예측
     cluster_labels = model.predict(tfidf_matrix)
@@ -42,27 +42,17 @@ def predict(**kwargs):
 
     # 7. 클러스터와 유사도를 결합한 추천
     df['cluster'] = cluster_labels
-    # df['similarity'] = similarities
-    df['distance'] = distances
+    # df['distance'] = distances
+    df['similarity'] = similarities
 
-    # 유사도 임계값 동적 조정 함수
-    # def adjust_threshold(df, initial_threshold=0.1, min_threshold=0.00001):
-    #     threshold = initial_threshold
-    #     while threshold >= min_threshold:
-    #         df_filtered = df[df['similarity'] > threshold]
-    #         if not df_filtered.empty:
-    #             return threshold, df_filtered
-    #         threshold /= 2  # 임계값을 동적으로 낮춤
-    #     return min_threshold, df[df['similarity'] > min_threshold]
-
-    def adjust_threshold(df, initial_threshold=0.5, max_threshold=2.0):
+    def adjust_threshold(df, initial_threshold=0.5, max_threshold=1.0):  # 0.5, 2
         threshold = initial_threshold
         while threshold <= max_threshold:
-            df_filtered = df[df['distance'] < threshold]
+            df_filtered = df[df['similarity'] > threshold]  # distance <
             if not df_filtered.empty:
                 return threshold, df_filtered
             threshold += 0.1
-        return max_threshold, df[df['distance'] < max_threshold]
+        return max_threshold, df[df['similarity'] < max_threshold]  # distance
 
     # 동적 임계값 적용
     similarity_threshold, df_filtered = adjust_threshold(df)
@@ -71,15 +61,13 @@ def predict(**kwargs):
     if df_filtered.empty:
         raise ValueError("No books meet the similarity threshold, even after lowering it.")
 
-    # 점수 계산 (약간의 무작위성 추가)
     # df_filtered['score'] = (
-    #         df_filtered['similarity'] * 0.6 +
-    #         (df_filtered['cluster'] == query_cluster).astype(int) * 0.3 +
-    #         np.random.uniform(0, 0.1, size=len(df_filtered))
+    #         (1 / (1 + df_filtered['distance'])) * 0.7 +  # 유사성(거리 기반)
+    #         (df_filtered['distance'] == query_cluster).astype(int) * 0.3  # 같은 클러스터에 속하는지 여부 (cluster 비교)
     # )
 
     df_filtered['score'] = (
-            (1 / (1 + df_filtered['distance'])) * 0.7 +
+            df_filtered['similarity'] * 0.7 +  # ✅ 올바른 계산
             (df_filtered['cluster'] == query_cluster).astype(int) * 0.3
     )
 

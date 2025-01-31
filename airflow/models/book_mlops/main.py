@@ -16,7 +16,7 @@ from models.book_mlops.model.predict import predict
 
 local_timezone = pendulum.timezone('Asia/Seoul')
 
-query = "ai"
+query = "파이썬"
 
 dag = DAG(dag_id="book_mlops",
           default_args={
@@ -26,7 +26,7 @@ dag = DAG(dag_id="book_mlops",
           },
           description="책 추천 모델",
           # schedule='@daily',
-          schedule='20 * * * *',
+          schedule='34 * * * *',
           start_date=datetime(2025, 1, 1, tzinfo=local_timezone),
           catchup=False,
           tags=["mlops", "recommend"]
