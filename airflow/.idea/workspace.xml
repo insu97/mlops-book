@@ -4,39 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="997d1ac9-8f73-4c3c-b65e-e7e15e15ab20" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/models/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/support/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/support/infra/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/support/infra/db.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/support/model/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/support/model/model_version.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/support/model/repository/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/support/model/repository/model_logger_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/support/model/repository/model_version_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/support/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/support/infra/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/support/infra/infra.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/support/model/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/support/model/repository/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/support/model/repository/test_model_logger_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/support/model/repository/test_model_version_respository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/book_mlops/test/support/test_model_version.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_mlops/data/db_update.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/book_mlops/data/db_update.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_mlops/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/book_mlops/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_mlops/model/new_model_create.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/book_mlops/model/new_model_create.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_mlops/model/predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/book_mlops/model/predict.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_recommend/book_recommend_model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_recommend/data/data_extract.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_recommend/data/save_books_to_database.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_recommend/model/check_model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_recommend/model/minibatch_model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_recommend/model/new_model_create.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/book_recommend/model/predict.py" beforeDir="false" />
-    </list>
+    <list default="true" id="997d1ac9-8f73-4c3c-b65e-e7e15e15ab20" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -268,7 +236,7 @@
       <workItem from="1738228431328" duration="9147000" />
       <workItem from="1738282833468" duration="8617000" />
       <workItem from="1738306612314" duration="4457000" />
-      <workItem from="1738486551241" duration="24090000" />
+      <workItem from="1738486551241" duration="24519000" />
     </task>
     <servers />
   </component>
