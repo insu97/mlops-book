@@ -14,9 +14,6 @@ jobs:
       with:
         fetch-depth: 0  # 모든 파일을 가져옴
 
-    - name: Check files in workspace
-      run: ls -la
-
     - name: Docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
@@ -24,8 +21,7 @@ jobs:
       run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_USER }}/book_mlops:latest .
-      working-directory: .  # Dockerfile이 있는 디렉토리 설정
+      run: docker build -t ${{ secrets.DOCKER_USER }}/book_mlops:latest -f airflow/Dockerfile airflow/
 
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USER }}/book_mlops:latest
