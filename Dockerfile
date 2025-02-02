@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir -r /opt/airflow/requirements.txt
 # DAG 및 기타 필요한 파일 복사
 COPY dags /opt/airflow/dags
 COPY plugins /opt/airflow/plugins
-COPY config /opt/airflow/config
+COPY config/ /app/config
 
 # 환경 변수 설정
 ENV AIRFLOW__CORE__LOAD_EXAMPLES=False
