@@ -1,4 +1,4 @@
-name: Docker Image CI / CD
+name: Docker Image CI/CD
 
 on:
   push:
@@ -7,22 +7,26 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # 모든 파일을 가져옴
+
+    - name: Check files in workspace
+      run: ls -la
 
     - name: Docker login
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
 
-    - name: Build the Docker image
+    - name: Build Docker image
       run: docker build -t ${{ secrets.DOCKER_USER }}/book_mlops:latest .
+      working-directory: .  # Dockerfile이 있는 디렉토리 설정
 
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USER }}/book_mlops:latest
@@ -51,11 +55,11 @@ jobs:
         script: |
           echo "Pulling latest Docker image..."
           docker pull ${{ secrets.DOCKER_USER }}/book_mlops:latest
-          
+
           echo "Stopping and removing old container..."
           docker stop book_mlops || true
           docker rm book_mlops || true
-          
+
           echo "Running new container..."
           docker run -d --name book_mlops -p 8000:8000 ${{ secrets.DOCKER_USER }}/book_mlops:latest
 
