@@ -21,7 +21,7 @@ jobs:
       run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_USER }}/book_mlops:latest -f airflow/Dockerfile airflow/
+      run: docker build -t ${{ secrets.DOCKER_USER }}/book_mlops:latest -f Dockerfile airflow/
 
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKER_USER }}/book_mlops:latest
