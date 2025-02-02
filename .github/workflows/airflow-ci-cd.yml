@@ -35,7 +35,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r airflow/equirements.txt
+        pip install -r airflow/requirements.txt
     - name: Build package
       run: |
         python setup.py sdist bdist_wheel
