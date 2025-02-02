@@ -1,10 +1,11 @@
+import os
 import pendulum
 from datetime import datetime
 
 from airflow import DAG
+from airflow.models.param import Param
 from airflow.operators.python import PythonOperator, BranchPythonOperator
 
-from support.config import TTBKEY
 from models.book_mlops.data.db_update import db_update
 from models.book_mlops.data.save_books_to_database import (
     save_books_to_database_task
@@ -14,9 +15,9 @@ from models.book_mlops.data.json_to_db import json_to_db
 from models.book_mlops.model.new_model_create import new_model_create
 from models.book_mlops.model.predict import predict
 
-local_timezone = pendulum.timezone('Asia/Seoul')
+from support.config import TTBKEY
 
-query = "파이썬"
+local_timezone = pendulum.timezone('Asia/Seoul')
 
 dag = DAG(dag_id="book_mlops",
           default_args={
@@ -26,10 +27,11 @@ dag = DAG(dag_id="book_mlops",
           },
           description="책 추천 모델",
           # schedule='@daily',
-          schedule='0 * * * *',
+          schedule='10 * * * *',
           start_date=datetime(2025, 1, 1, tzinfo=local_timezone),
           catchup=False,
-          tags=["mlops", "recommend"]
+          tags=["mlops", "recommend"],
+          params={"query": Param("파이썬", type="string")},  # 동적 입력 추가
           )
 
 
@@ -69,7 +71,7 @@ new_model_create = PythonOperator(
 search_task = PythonOperator(
     task_id='search_and_collect_books',
     python_callable=search_and_collect_books,
-    op_kwargs={'params': {'ttbkey': TTBKEY, 'query': query}},
+    op_kwargs={'params': {'ttbkey': TTBKEY, 'query': "{{ params.query }}"}},
     trigger_rule='all_done',
     dag=dag,
 )
@@ -77,7 +79,7 @@ search_task = PythonOperator(
 predict_task = PythonOperator(
     task_id="predict",
     python_callable=predict,
-    op_kwargs={'params': {'query': query}},
+    op_kwargs={'params': {'query': "{{ params.query }}"}},
     dag=dag,
 )
 

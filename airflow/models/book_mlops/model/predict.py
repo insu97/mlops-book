@@ -6,14 +6,19 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import euclidean_distances
 import pandas as pd
 import numpy as np
+from models.book_mlops.support.model.model_version import ModelVersion
 
 
 def predict(**kwargs):
     query = kwargs['params']['query']
 
-    # 1. 모델 불러오기
+    # 모델 버전 관리
+    model_version = ModelVersion("book_recommend")
+    latest_version = model_version.get_final_ct_model_version()
+
+    # 1. 모델 경로 설정
     airflow_dags_path = Variable.get('AIRFLOW_DAGS_PATH')
-    model_dir = f"{airflow_dags_path}/models/book_recommend/model"
+    model_dir = f'{airflow_dags_path}/models/book_recommend/model/{latest_version}'
     model_path = os.path.join(model_dir, "book_recommend.joblib")
     tfidf_path = os.path.join(model_dir, "tfidf_vectorizer.joblib")
 
