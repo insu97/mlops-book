@@ -1,3 +1,6 @@
+현재 `ci-cd.yml` 파일은 다음과 같습니다. 수정할 내용을 구체적으로 말씀해 주세요.
+
+```yaml
 name: CI/CD for Book Recommendation Model
 
 on:
@@ -66,3 +69,4 @@ jobs:
   networks:
     mlops_network:
       driver: bridge
+```
