@@ -39,7 +39,7 @@ jobs:
       run: |
         docker run --rm \
           --network host \
-          -e SQLALCHEMY_DATABASE_URI="mysql+pymysql://user:password@localhost:3306/book_db" \
+          -e SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:root@localhost:3306/book_db" \
           book_mlops_model pytest
 
     - name: Push Docker image to Docker Hub
