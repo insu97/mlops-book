@@ -3,11 +3,10 @@ FROM python:3.10-slim
 
 # 작업 디렉토리 설정
 WORKDIR /app
-
+ENV PYTHONPATH="${PYTHONPATH}:/app/airflow"
 # 의존성 파일 복사
 COPY airflow/requirements.txt .
-COPY airflow/models /app/airflow/models/
-COPY airflow/support /app/airflow/support/
+COPY airflow/ /app/airflow/
 COPY airflow/models/book_mlops/main.py /app/airflow/dags/
 
 # 필요한 시스템 패키지 설치
