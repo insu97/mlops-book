@@ -1,0 +1,35 @@
+name: CI/CD for Book Recommendation Model
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image
+      run: |
+        docker build -t book_mlops_model .
+    
+    - name: Run tests
+      run: |
+        docker run --rm book_mlops_model pytest
+    
+    - name: Push Docker image to Docker Hub
+      run: |
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker tag book_mlops_model $DOCKER_USERNAME/book_mlops_model:latest
+        docker push $DOCKER_USERNAME/book_mlops_model:latest
+
+    - name: Deploy to production (if applicable)
+      run: |
+        # 배포 스크립트나 명령어 추가
+        echo "Deployment step"
