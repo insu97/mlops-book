@@ -26,27 +26,27 @@ jobs:
     - name: Wait for DB initialization
       run: |
         docker run --rm --network mlops_network mariadb:10.8.2 \
-          mysqladmin ping -hmariadb -uuser -ppassword --wait=30 --connect-timeout=20
+          mysqladmin ping -h172.19.0.3 -uuser -ppassword --wait=30 --connect-timeout=20
 
     - name: Initialize Airflow DB
       run: |
         docker run --rm \
           --network mlops_network \
-          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
+          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@172.19.0.3:3306/book_db" \
           book_mlops_model airflow db init
 
     - name: Verify DB schema
       run: |
         docker run --rm \
           --network mlops_network \
-          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
+          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@172.19.0.3:3306/book_db" \
           book_mlops_model airflow db check
 
     - name: Run tests
       run: |
         docker run --rm \
           --network mlops_network \
-          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
+          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@172.19.0.3:3306/book_db" \
           -e AIRFLOW__CORE__DAGS_FOLDER=/app/airflow/dags \
           book_mlops_model pytest tests/
 
