@@ -19,6 +19,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN pip install pytest
+
 # 프로젝트 파일 복사
 COPY . .
 
