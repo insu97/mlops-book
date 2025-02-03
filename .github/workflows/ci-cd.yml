@@ -32,5 +32,6 @@ jobs:
 
     - name: Deploy to production (if applicable)
       run: |
-        # 배포 스크립트나 명령어 추가
-        echo "Deployment step"
+        docker pull insu97/book_mlops_model:latest
+        docker-compose -f production.yml up -d
+
