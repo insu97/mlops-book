@@ -17,7 +17,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t book_mlops_model .
+        docker build -f airflow/Dockerfile -t book_mlops_model .
     
     - name: Run tests
       run: |
@@ -25,9 +25,9 @@ jobs:
     
     - name: Push Docker image to Docker Hub
       run: |
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-        docker tag book_mlops_model $DOCKER_USERNAME/book_mlops_model:latest
-        docker push $DOCKER_USERNAME/book_mlops_model:latest
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+        docker tag book_mlops_model $DOCKER_USER/book_mlops_model:latest
+        docker push $DOCKER_USER/book_mlops_model:latest
 
     - name: Deploy to production (if applicable)
       run: |
