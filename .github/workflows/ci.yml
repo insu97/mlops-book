@@ -10,9 +10,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      AIRFLOW_HOME: ./airflow_home  # 환경 변수 상단으로 이동
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: sqlite:///${{ github.workspace }}/test_airflow.db  # 절대 경로 사용
+      AIRFLOW_HOME: ./airflow_home
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:///${{ github.workspace }}/test_airflow.db
       AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: "False"
+      AIRFLOW__CORE__DAGS_FOLDER: ${{ github.workspace }}/airflow/dags  # 절대 경로 지정
 
     steps:
     - name: Checkout code
@@ -30,12 +31,26 @@ jobs:
         
     - name: Initialize Airflow DB
       run: |
-        airflow db init
-        airflow variables set FEATURE_STORE_URL ${{ secrets.FEATURE_STORE_URL }}  # 테스트용 변수 주입
+        # 1. Airflow 설정 파일 강제 생성
+        mkdir -p $AIRFLOW_HOME
+        cat << EOF > $AIRFLOW_HOME/airflow.cfg
+        [core]
+        load_default_connections = False
+        dags_folder = $AIRFLOW__CORE__DAGS_FOLDER
+        
+        [database]
+        sql_alchemy_conn = $AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+        EOF
+        
+        # 2. DB 마이그레이션 실행
+        airflow db migrate
+        
+        # 3. 기본 연결 정보 생성
+        airflow connections create-default-connections
 
     - name: Run tests
       run: |
-        pytest tests/ -v -s  # 상세 로그 출력 활성화
+        pytest tests/ -v -s --log-cli-level=DEBUG
 
   train:
     needs: test
@@ -53,10 +68,14 @@ jobs:
         python-version: '3.10'
 
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        pip install -r requirements.txt
+        pip install apache-airflow==2.7.3  # Airflow 버전 명시적 설치
 
     - name: Train model
-      run: python -m models.book_recommend.train
+      run: |
+        mkdir -p $AIRFLOW_HOME
+        python -m models.book_recommend.train
 
     - name: Upload model artifacts
       uses: actions/upload-artifact@v3
