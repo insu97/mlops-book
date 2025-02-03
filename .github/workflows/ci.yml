@@ -44,4 +44,22 @@ jobs:
       FEATURE_STORE_URL: ${{ secrets.FEATURE_STORE_URL }}
       
     steps:
-    # 기존 train job 동일 유지
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Train model
+      run: python -m models.book_recommend.train
+
+    - name: Upload model artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: model-artifacts
+        path: models/book_recommend/model/
