@@ -13,8 +13,9 @@ RUN pip install --upgrade pip
 # 필요한 시스템 패키지 설치
 RUN apt-get update && apt-get install -y \
     pkg-config \
-    libmariadb-dev
-
+    libmariadb-dev \
+    build-essential \
+    default-libmysqlclient-dev
 
 RUN pip install --no-cache-dir -r requirements.txt
 
