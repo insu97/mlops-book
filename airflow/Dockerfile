@@ -6,7 +6,8 @@ WORKDIR /app
 
 # 의존성 파일 복사
 COPY airflow/requirements.txt .
-COPY airflow/ /app/airflow/
+COPY airflow/models /app/models/
+COPY airflow/support /app/support/
 COPY airflow/models/book_mlops/main.py /app/airflow/dags/
 
 # 필요한 시스템 패키지 설치
