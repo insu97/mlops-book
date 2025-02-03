@@ -4,59 +4,55 @@ on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      mariadb:
-        image: mariadb:10.8.2
-        env:
-          MARIADB_ROOT_PASSWORD: root
-          MARIADB_DATABASE: book_db
-          MARIADB_USER: user
-          MARIADB_PASSWORD: password
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping -uroot -proot" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
+    - name: Create shared network
+      run: docker network create mlops_network || true
+    
     - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    - name: Create shared network
+      run: docker network create mlops_network || true
+
     - name: Build Docker image
       run: |
         docker build -f airflow/Dockerfile -t book_mlops_model .
 
+    - name: Wait for DB initialization
+      run: |
+        docker run --rm --network mlops_network mariadb:10.8.2 \
+          mysqladmin ping -hmariadb -uuser -ppassword --wait=30 --connect-timeout=20
+
     - name: Initialize Airflow DB
       run: |
         docker run --rm \
+          --network mlops_network \
           -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
           book_mlops_model airflow db init
-
-    - name: Set Airflow Variable
-      run: |
-        docker run --rm \
-          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
-          book_mlops_model airflow variables set AIRFLOW_DAGS_PATH /app/airflow/dags
 
     - name: Verify DB schema
       run: |
         docker run --rm \
+          --network mlops_network \
           -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
           book_mlops_model airflow db check
 
     - name: Run tests
       run: |
         docker run --rm \
+          --network mlops_network \
           -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
           -e AIRFLOW__CORE__DAGS_FOLDER=/app/airflow/dags \
           book_mlops_model pytest tests/
 
-    - name: Push Docker image to Docker Hub
+    - name: Push Docker image
       run: |
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
         docker tag book_mlops_model ${{ secrets.DOCKER_USER }}/book_mlops_model:latest
@@ -66,3 +62,7 @@ jobs:
       run: |
         docker pull ${{ secrets.DOCKER_USER }}/book_mlops_model:latest
         docker compose -f production.yml up -d
+
+  networks:
+    mlops_network:
+      driver: bridge
