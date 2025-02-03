@@ -43,7 +43,7 @@ jobs:
           --network mlops_network \
           -e AIRFLOW__CORE__DAGS_FOLDER=/app/airflow/models/book_mlops/ \
           -e AIRFLOW__CORE__LOAD_EXAMPLES=False \
-          book_mlops pytest /app/airflow/models/book_mlops/main.py
+          book_mlops_model pytest /app/airflow/models/book_mlops/main.py
 
     - name: Push Docker image to Docker Hub
       run: |
