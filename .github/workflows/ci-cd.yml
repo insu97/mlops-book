@@ -37,7 +37,7 @@ jobs:
     - name: Wait for MariaDB
       run: |
         docker run --rm --network mlops_network mariadb:10.8.2 \
-          mysqladmin ping -hmariadb -uuser -ppassword --wait=30 --connect-timeout=20
+          mysqladmin ping -mariadb -user -password --wait=30 --connect-timeout=20
 
     - name: Initialize Airflow DB
       run: |
