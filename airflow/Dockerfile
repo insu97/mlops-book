@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libmariadb-dev \
     build-essential \
-    default-libmysqlclient-dev
+    default-libmysqlclient-dev \
+    default-mysql-client  # ← 추가
 
 RUN pip install --no-cache-dir -r requirements.txt
 
