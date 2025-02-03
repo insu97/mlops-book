@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="997d1ac9-8f73-4c3c-b65e-e7e15e15ab20" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/book_dag.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -238,7 +239,7 @@
       <workItem from="1738228431328" duration="9147000" />
       <workItem from="1738282833468" duration="8617000" />
       <workItem from="1738306612314" duration="4457000" />
-      <workItem from="1738486551241" duration="32629000" />
+      <workItem from="1738486551241" duration="34428000" />
     </task>
     <servers />
   </component>
