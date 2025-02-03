@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  app:
+    image: insu97/book_mlops_model:latest
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=mysql+pymysql://user:password@db:3306/book_db
+
+  db:
+    image: mariadb:10.8.2
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: book_db
+      MARIADB_USER: user
+      MARIADB_PASSWORD: password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
