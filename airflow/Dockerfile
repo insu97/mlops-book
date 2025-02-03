@@ -24,5 +24,5 @@ RUN pip install pytest
 # 프로젝트 파일 복사
 COPY . .
 
-# Airflow 실행
-CMD ["airflow", "scheduler"]
+# 테스트 실행 시 Airflow 실행을 임시로 제외
+CMD ["bash", "-c", "if [ \"$RUN_AIRFLOW\" != \"true\" ]; then pytest; else airflow scheduler; fi"]
