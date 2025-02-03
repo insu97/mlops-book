@@ -10,17 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    - name: Start MariaDB
-      run: |
-        docker run -d --name mariadb \
-          --network mlops_network \
-          -e MYSQL_ROOT_PASSWORD=password \
-          -e MYSQL_USER=user \
-          -e MYSQL_PASSWORD=password \
-          -e MYSQL_DATABASE=book_db \
-          mariadb:10.8.2
-          
     - name: Create shared network
       run: docker network create mlops_network || true
     
@@ -34,32 +23,43 @@ jobs:
       run: |
         docker build -f airflow/Dockerfile -t book_mlops_model .
 
-    - name: Wait for DB initialization
+    - name: Start MariaDB (검색 결과 2,3,4,5 참조)
+      run: |
+        docker run -d --name mariadb \
+          --network mlops_network \
+          -e MYSQL_ROOT_PASSWORD=password \
+          -e MYSQL_USER=user \
+          -e MYSQL_PASSWORD=password \
+          -e MYSQL_DATABASE=book_db \
+          -p 3306:3306 \
+          mariadb:10.8.2 \
+          --bind-address=0.0.0.0
+
+    - name: Wait for DB initialization (검색 결과 6 참조)
       run: |
         docker run --rm --network mlops_network mariadb:10.8.2 \
           mysqladmin ping -hmariadb -uuser -ppassword \
-          --wait=60 --connect-timeout=30
+          --wait=90 --connect-timeout=45
 
-    - name: Initialize Airflow DB
+    - name: Initialize Airflow DB (검색 결과 1,5 참조)
       run: |
         docker run --rm \
           --network mlops_network \
           -e AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
-          book_mlops_model airflow db migrate  # 호스트명으로 복원
+          book_mlops_model airflow db migrate
 
-
-    - name: Verify DB schema
+    - name: Verify DB schema (검색 결과 1 참조)
       run: |
         docker run --rm \
           --network mlops_network \
-          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@172.19.0.3:3306/book_db" \
+          -e AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
           book_mlops_model airflow db check
 
-    - name: Run tests
+    - name: Run tests (검색 결과 1,5 참조)
       run: |
         docker run --rm \
           --network mlops_network \
-          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@172.19.0.3:3306/book_db" \
+          -e AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
           -e AIRFLOW__CORE__DAGS_FOLDER=/app/airflow/dags \
           book_mlops_model pytest tests/
 
