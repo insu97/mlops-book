@@ -10,10 +10,11 @@ COPY airflow/requirements.txt .
 # 의존성 설치
 RUN pip install --upgrade pip
 
+# 필요한 시스템 패키지 설치
 RUN apt-get update && apt-get install -y \
     pkg-config \
-    libmysqlclient-dev \
     libmariadb-dev
+
 
 RUN pip install --no-cache-dir -r requirements.txt
 
