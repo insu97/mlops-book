@@ -18,11 +18,13 @@ jobs:
           MARIADB_PASSWORD: password
         ports:
           - 3306:3306
+        networks:
+          - mlops_network
         options: --health-cmd="mysqladmin ping -uroot -proot" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -37,7 +39,7 @@ jobs:
     - name: Wait for MariaDB
       run: |
         docker run --rm --network mlops_network mariadb:10.8.2 \
-          mysqladmin ping -mariadb -user -password --wait=30 --connect-timeout=20
+          mysqladmin ping -hmariadb -uuser -ppassword --wait=30 --connect-timeout=20
 
     - name: Initialize Airflow DB
       run: |
@@ -46,20 +48,20 @@ jobs:
           -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
           book_mlops_model airflow db init
 
-    - name: Set Airflow Variable
+    - name: Verify DB schema
       run: |
         docker run --rm \
           --network mlops_network \
           -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
-          book_mlops_model airflow variables set AIRFLOW_DAGS_PATH /app/airflow/models/book_mlops/
+          book_mlops_model airflow checkdb
 
     - name: Run tests
       run: |
         docker run --rm \
           --network mlops_network \
-          -e AIRFLOW__CORE__DAGS_FOLDER=/app/airflow/models/book_mlops/ \
-          -e AIRFLOW__CORE__LOAD_EXAMPLES=False \
-          book_mlops_model pytest /app/airflow/models/book_mlops/main.py
+          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
+          -e AIRFLOW__CORE__DAGS_FOLDER=/app/airflow/dags \
+          book_mlops_model pytest tests/
 
     - name: Push Docker image to Docker Hub
       run: |
@@ -71,3 +73,7 @@ jobs:
       run: |
         docker pull ${{ secrets.DOCKER_USER }}/book_mlops_model:latest
         docker compose -f production.yml up -d
+
+networks:
+  mlops_network:
+    driver: bridge
