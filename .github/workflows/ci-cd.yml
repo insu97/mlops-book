@@ -34,9 +34,22 @@ jobs:
     - name: Wait for MariaDB
       run: |
         docker run --rm --network host mariadb:10.8.2 mysqladmin ping -h127.0.0.1 -uuser -ppassword --wait=30 --connect-timeout=20
+    
     - name: Create Docker network
       run: docker network create mlops_network || true
       
+    - name: Initialize Airflow DB
+      run: |
+        docker run --rm \
+          --network mlops_network \
+          book_mlops_model airflow db init
+
+    - name: Set Airflow Variable
+      run: |
+        docker run --rm \
+          --network mlops_network \
+          book_mlops_model airflow variables set AIRFLOW_DAGS_PATH /app/airflow/dags
+
     - name: Run tests
       run: |
         docker run --rm \
