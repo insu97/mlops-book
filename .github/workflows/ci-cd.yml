@@ -32,6 +32,6 @@ jobs:
 
     - name: Deploy to production (if applicable)
       run: |
-        docker pull insu97/book_mlops_model:latest
-        docker-compose -f production.yml up -d
+        docker pull ${{ secrets.DOCKER_USER }}/book_mlops_model:latest
+        docker compose -f production.yml up -d
 
