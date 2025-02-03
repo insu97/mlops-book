@@ -8,6 +8,7 @@ WORKDIR /app
 COPY airflow/requirements.txt .
 
 # 의존성 설치
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 프로젝트 파일 복사
