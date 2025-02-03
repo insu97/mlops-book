@@ -10,6 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+    - name: Start MariaDB
+      run: |
+        docker run -d --name mariadb \
+          --network mlops_network \
+          -e MYSQL_ROOT_PASSWORD=password \
+          -e MYSQL_USER=user \
+          -e MYSQL_PASSWORD=password \
+          -e MYSQL_DATABASE=book_db \
+          mariadb:10.8.2
+          
     - name: Create shared network
       run: docker network create mlops_network || true
     
@@ -25,15 +36,16 @@ jobs:
 
     - name: Wait for DB initialization
       run: |
-        docker run --rm --network mlops_network -d mariadb:10.8.2 \
-          mysqladmin ping -h172.19.0.3 -uuser -ppassword --wait=30 --connect-timeout=20
+        docker run --rm --network mlops_network mariadb:10.8.2 \
+          mysqladmin ping -hmariadb -uuser -ppassword \
+          --wait=60 --connect-timeout=30
 
     - name: Initialize Airflow DB
       run: |
         docker run --rm \
           --network mlops_network \
-          -e AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@172.19.0.3:3306/book_db" \
-          book_mlops_model airflow db migrate  # db init 대신 migrate 사용
+          -e AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
+          book_mlops_model airflow db migrate  # 호스트명으로 복원
 
 
     - name: Verify DB schema
