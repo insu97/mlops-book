@@ -31,24 +31,27 @@ jobs:
       run: |
         docker build -f airflow/Dockerfile -t book_mlops_model .
 
-    - name: Wait for MariaDB
-      run: |
-        docker run --rm --network host mariadb:10.8.2 mysqladmin ping -h127.0.0.1 -uuser -ppassword --wait=30 --connect-timeout=20
-    
     - name: Create Docker network
       run: docker network create mlops_network || true
-      
+
+    - name: Wait for MariaDB
+      run: |
+        docker run --rm --network mlops_network mariadb:10.8.2 \
+          mysqladmin ping -hmariadb -uuser -ppassword --wait=30 --connect-timeout=20
+
     - name: Initialize Airflow DB
       run: |
         docker run --rm \
           --network mlops_network \
+          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
           book_mlops_model airflow db init
 
     - name: Set Airflow Variable
       run: |
         docker run --rm \
           --network mlops_network \
-          book_mlops_model airflow variables set AIRFLOW_DAGS_PATH /app/airflow/dags
+          -e AIRFLOW__CORE__SQL_ALCHEMY_CONN="mysql+pymysql://user:password@mariadb:3306/book_db" \
+          book_mlops_model airflow variables set AIRFLOW_DAGS_PATH /app/airflow/models/book_mlops/
 
     - name: Run tests
       run: |
