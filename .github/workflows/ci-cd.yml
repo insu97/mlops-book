@@ -38,9 +38,10 @@ jobs:
     - name: Run tests
       run: |
         docker run --rm \
-          --network host \
-          -e SQLALCHEMY_DATABASE_URI="mysql+pymysql://root:root@localhost:3306/book_db" \
-          book_mlops_model pytest
+          --network mlops_network \
+          -e AIRFLOW__CORE__DAGS_FOLDER=/app/airflow/dags \
+          -e AIRFLOW__CORE__LOAD_EXAMPLES=False \
+          book_mlops_model pytest tests/test_book_dag.py
 
     - name: Push Docker image to Docker Hub
       run: |
