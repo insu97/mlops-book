@@ -21,17 +21,14 @@ jobs:
     
     - name: Run tests
       run: |
-        # 올바른 네트워크 지정 방식
+        docker network create mlops_network || true
         docker run --rm --network=mlops_network book_mlops_model pytest
 
-
-    
     - name: Push Docker image to Docker Hub
       run: |
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
         docker tag book_mlops_model ${{ secrets.DOCKER_USER }}/book_mlops_model:latest
         docker push ${{ secrets.DOCKER_USER }}/book_mlops_model:latest
-
 
     - name: Deploy to production (if applicable)
       run: |
