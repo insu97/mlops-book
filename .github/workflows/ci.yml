@@ -13,7 +13,7 @@ jobs:
       AIRFLOW_HOME: ./airflow_home
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:///${{ github.workspace }}/test_airflow.db
       AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS: "False"
-      AIRFLOW__CORE__DAGS_FOLDER: ${{ github.workspace }}/airflow/dags  # 절대 경로 지정
+      AIRFLOW__CORE__DAGS_FOLDER: ${{ github.workspace }}/airflow/dags
 
     steps:
     - name: Checkout code
@@ -31,45 +31,36 @@ jobs:
         
     - name: Initialize Airflow DB
       run: |
-        # DAG 폴더 생성 및 샘플 DAG 추가
+        # DAG 폴더 및 설정 파일 생성
         mkdir -p ${{ github.workspace }}/airflow/dags
-        echo 'from airflow import DAG; dag = DAG("test_dag")' > ${{ github.workspace }}/airflow/dags/test_dag.py
-    
-        # DB 초기화
+        echo 'from airflow import DAG; dag = DAG("book_mlops")' > ${{ github.workspace }}/airflow/dags/book_mlops.py
+        
+        # Airflow 설정 강제 적용
+        mkdir -p $AIRFLOW_HOME
+        cat << EOF > $AIRFLOW_HOME/airflow.cfg
+        [core]
+        dags_folder = ${{ github.workspace }}/airflow/dags
+        load_default_connections = False
+        
+        [database]
+        sql_alchemy_conn = $AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+        EOF
+        
+        # DB 마이그레이션 실행
         airflow db migrate
         airflow connections create-default-connections
-    
-        - name: Run tests
-          run: |
-            pytest tests/ -v -s --log-cli-level=DEBUG
+
+    - name: Validate DB schema
+      run: |
+        sqlite3 ${{ github.workspace }}/test_airflow.db ".tables"
+
+    - name: Run tests
+      run: |
+        pytest tests/ -v -s --log-cli-level=DEBUG
 
   train:
     needs: test
     runs-on: ubuntu-latest
-    env:
-      FEATURE_STORE_URL: ${{ secrets.FEATURE_STORE_URL }}
-      
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-        pip install apache-airflow==2.7.3  # Airflow 버전 명시적 설치
-
-    - name: Train model
-      run: |
-        mkdir -p $AIRFLOW_HOME
-        python -m models.book_recommend.train
-
-    - name: Upload model artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: model-artifacts
-        path: models/book_recommend/model/
+      - name: Train model
+        run: python -m models.book_recommend.train
