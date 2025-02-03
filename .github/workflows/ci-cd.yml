@@ -21,7 +21,9 @@ jobs:
     
     - name: Run tests
       run: |
-        docker run --rm --network mlops_network book_mlops_model pytest
+        # 올바른 네트워크 지정 방식
+        docker run --rm --network=mlops_network book_mlops_model pytest
+
 
     
     - name: Push Docker image to Docker Hub
