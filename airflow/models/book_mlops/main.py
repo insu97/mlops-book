@@ -14,6 +14,7 @@ from models.book_mlops.data.data_extract import search_and_collect_books
 from models.book_mlops.data.json_to_db import json_to_db
 from models.book_mlops.model.new_model_create import new_model_create
 from models.book_mlops.model.predict import predict
+from models.book_mlops.model.deploy_model import deploy_model
 
 from support.config import TTBKEY
 
@@ -27,7 +28,7 @@ dag = DAG(dag_id="book_mlops",
           },
           description="책 추천 모델",
           # schedule='@daily',
-          schedule='10 * * * *',
+          schedule='32 * * * *',
           start_date=datetime(2025, 1, 1, tzinfo=local_timezone),
           catchup=False,
           tags=["mlops", "recommend"],
@@ -89,6 +90,13 @@ json_to_db = PythonOperator(
     dag=dag,
 )
 
+deploy_task = PythonOperator(
+    task_id="deploy_model",
+    python_callable=deploy_model,
+    provide_context=True,
+    dag=dag,
+)
+
 branch_task >> [db_update, search_task]
-db_update >> save_books_to_database_task >> json_to_db >> new_model_create
+db_update >> save_books_to_database_task >> json_to_db >> new_model_create >> deploy_task
 search_task >> predict_task
