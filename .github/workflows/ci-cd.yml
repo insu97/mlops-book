@@ -33,11 +33,15 @@ jobs:
 
     - name: Wait for MariaDB
       run: |
-        export MYSQL_PWD=password
-        until mysqladmin ping -hmariadb -uuser --silent; do
+        echo "[client]
+        user=user
+        password=password" > ~/.my.cnf
+        
+        until mysqladmin --defaults-extra-file=~/.my.cnf ping -hmariadb --silent; do
           echo "Waiting for MariaDB..."
           sleep 5
         done
+
 
 
     - name: Initialize Airflow DB
