@@ -6,8 +6,7 @@ WORKDIR /app
 
 # 의존성 파일 복사
 COPY airflow/requirements.txt .
-COPY airflow/dags/ /app/airflow/dags/
-COPY airflow/models/book_mlops/main.py /app/airflow/dags/ 
+COPY airflow/ /app/airflow/
 
 # 의존성 설치
 RUN pip install --upgrade pip
